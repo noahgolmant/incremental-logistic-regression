@@ -16,6 +16,24 @@ def load(filename):
     data = data[:, 1:]
     return shuffle(data, labels)
 
+def load_records(filename):
+    records = []
+    with open(filename, 'r') as file:
+        reader = csv.reader(file, delimiter=',')
+        for row in reader:
+            records.append(list(map(float, row)))
+    return records
+
+def load_keystone_data(train_filename, test_filename):
+    train_records = load_records(train_filename)
+    test_records = load_records(test_filename)
+
+    optimal_train = train_records[-1]
+    optimal_test = test_records[-1]
+    return np.array(train_records[:-1]), optimal_train, np.array(test_records[:-1]), optimal_test
+
+
+
 class Metrics:
     def __init__(self, train_labels, test_labels):
         # track metrics for all runs
